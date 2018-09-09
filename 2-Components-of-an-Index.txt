@@ -1,0 +1,38 @@
+//Create index and type inside index and assign values to fileds
+PUT /business/building/110
+{
+  "address": "çankaya ankara",
+  "floors" : 10,
+  "offices" :21,
+  "loc" : 
+  {
+    "lat" : 40.2342,
+    "lon" :-23.534
+  }
+}
+
+//search all document inside index
+GET business/_search
+
+//search all document inside type
+GET business/building/_search
+
+// search on fields of index or types
+GET business/building/_search
+{
+  "query" : {
+    "term": {"address": "ankara"}
+  }
+}
+
+GET business/building/_search
+{
+  "query" : {
+    "term": {
+      "address": {
+        "value": "ankara"
+      }
+    }
+  }
+}
+

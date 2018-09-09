@@ -1,0 +1,23 @@
+// Analysis has two step as bellow:
+//1 - tokenizer means that the document indexins on table(which word exist on which document)
+//2 - Filters: 
+//2.1 Remove stop words
+//2.2 lowercasing
+//2.3 Stemming (root of the swimming and swimmers is swim)
+//2.4 Synonyms (thin and skinny is the same)
+
+// Above steps is for indexsing, if we want to search on doxuments follow steps bellow:
+// 1- send search text("the this") into Analysis
+// 2- Outcome of the Analysis should be thin
+// 3- lookin thin on token table, means that word "thin" exist in whcih document
+
+
+// We can act Analysis steps on specific field like (tweeted)
+{
+	"name" : "Tohid t",
+	"username" : "Admin",
+	"tweeted" :"The thin lifeguard was swimming in the lake",
+	"post-date" :"oct 10,2018"
+}
+
+// if we apply Analyisis on indexing process we have to do the same Analysis on search process (*important)

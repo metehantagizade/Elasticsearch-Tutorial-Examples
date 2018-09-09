@@ -1,0 +1,56 @@
+
+//Create Index if now exist and inside index create type car and asign 123 id to document with the value inside brakets
+//If the query bellow run as second time index and type will not be recrated but the all value will be update.(version of document will be change)
+PUT /vehicles/car/123
+{
+  "make" : "Honda",
+  "color" : "black",
+  "HP" : 250,
+  "milage" : "24000",
+  "price" : 19300.97
+}
+
+// To retrive data with id 123 inside vehicles index of type car run query bellow
+GET /vehicles/car/123
+
+//To retrive only soruce of the document we can run query bellow
+GET /vehicles/car/123/_source
+
+// To find if the document is exist HEAD Api can be use like bellow
+HEAD /vehicles/car/123
+
+//Update all data (reindex all data)
+PUT /vehicles/car/123
+{
+  "make" : "Honda",
+  "color" : "black",
+  "HP" : 250,
+  "milage" : "24000",
+  "price" : 19300.97
+}
+
+//Update onle some field
+POST /vehicles/car/123/_update
+{
+  "doc" :
+  {
+    "color" : "blue"
+  }
+}
+
+//If field does not exist it will be added to document(driver will be add to document)
+POST /vehicles/car/123/_update
+{
+  "doc" :
+  {
+    "driver" : "Tohid" 
+  }
+}
+
+//Delete
+DELETE vehicles/car/123 (delete document)
+DELETE vehicles/car (delete type if any document exist inside type otherwise will get an error)
+DELETE vehicles (delete index if any type exist inside index otherwise will get an error)
+
+
+

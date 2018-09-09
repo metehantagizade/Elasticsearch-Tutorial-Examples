@@ -1,0 +1,96 @@
+// Describe how to define a custome Index 
+// Create Index without mapping fields
+PUT /customers
+{
+  "setting":{
+    "number_of_shards" : 2,
+    "number-of-replicas" :1
+  },
+  "mappings": {
+    
+  }
+}
+
+//mapping fields oncreated index
+PUT /customers/_mapping/online
+{
+  "properties": {
+    "name" :{
+      "type": "text",
+      "analyzer": "standard"
+    },
+    "gender" :{
+      "type" :"text",
+      "analyzer": "standard"
+    },
+    "age" : {
+      "type": "integer"
+    },
+    "total_spent" : {
+      "type": "float"
+    },
+    "is_new" :{
+      "type": "boolean"
+    }
+  }
+}
+
+//To do mapping and setting in same query look at the bellow
+PUT /customers
+{
+  "mappings": {
+    "online" : {
+      "properties":
+        {
+        "name" :{
+          "type": "text",
+          "analyzer": "standard"
+        },
+        "gender" :{
+          "type" :"text",
+          "analyzer": "standard"
+        },
+        "age" : {
+          "type": "integer"
+        },
+        "total_spent" : {
+          "type": "float"
+        },
+        "is_new" :{
+          "type": "boolean"
+        }
+      }
+    }
+  }, 
+  "settings": {
+    "number_of_shards": 2,
+    "number_of_replicas": 1
+  }
+}
+
+// After creating Index we can indecing document inside it. In indecing process if a filed has not be mapping that field will be automatically mapping by elasticsearch
+//In creating index process we not map address field, by running guery bellow this field will be mapping automatically
+PUT customers/online/123
+{
+  "name" : "tohid",
+  "address" : "ankara",
+  "gender" : "male",
+  "age" : 31,
+  "total_spent" : 550.23,
+  "is_new" : false
+}
+
+// To ignore this process we can run query bellow (without throw exception)
+GET  customers/_mapping/online
+{
+  "dynamic" :false
+}
+
+// This will throw exception that user try to indecing a filed that not mapped before
+GET  customers/_mapping/online
+{
+  "dynamic" :"strict"
+}
+
+
+
