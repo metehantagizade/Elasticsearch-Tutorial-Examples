@@ -1,0 +1,73 @@
+//Everything in elasticsearch follows with "query" , (filter must be inside "query otherwise will not work")
+//Filter does not do relevancy scoring (_score will be 0 everytime and everywhere)
+// After run filter DSL , runned query will be cashed inside elasticsearch and the second time on running DSL , it will work faster than first running
+GET courses/_search
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "bool": {
+          "must" : [
+            {"match" : {"professor.name":"bill"}},
+            {"match" : {"name":"accounting"}}
+          ],
+          "must_not" : [
+            {"match" : {"room":"e7"}}
+          ]
+        }
+      }  
+    } 
+  }
+}
+
+// Use Query context and filter context together
+GET courses/_search
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "bool": {
+          "must" : [
+            {"match" : {"professor.name":"bill"}},
+            {"match" : {"name":"accounting"}}
+          ]
+        }
+      }, 
+      "must": [
+        {"match": {"room": "e3"}}
+      ]
+    } 
+  }
+}
+
+//Another complex example
+//Data that match to filter section does not has _score value
+// using ^2 ^3 and so on to increase importancy of the search field
+GET courses/_search
+{
+  "query": {
+    "bool": {
+      "filter": {
+        "bool": {
+          "must" : [
+            {"match" : {"professor.name":"bill"}},
+            {"match" : {"name":"accounting"}}
+          ]
+        }
+      }, 
+      "should": [
+        {"match": {"room": "e3"}},
+        {"range": {
+          "students_enrolled": {
+            "gte": 10,
+            "lte": 20
+          }
+        }},
+        {"multi_match": {
+          "query": "market",
+          "fields": ["name","course_description^2"]
+        }}
+      ]
+    } 
+  }
+}
